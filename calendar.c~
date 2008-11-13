@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+main()
+{
+  int year;     /* 西暦 */
+  int month;    /* 月   */
+  int days;     /* 月の日数 */
+  int youbi;    /* 最初の日の曜日番号 */
+
+  getYearMonth(&year, &month);
+  days = getMonthDays(year, month);
+  youbi = getWeekDay(year, month, 1);
+  printCalendar(year, month, days, youbi);
+}
