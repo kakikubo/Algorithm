@@ -13,7 +13,9 @@ LIB_SRCS = calendar_lib.c
 SRCS = $(filter-out $(LIB_SRCS),$(wildcard *.c))
 BINS = $(SRCS:.c=)
 
-.PHONY: all clean test
+UNIT_TEST_BINS = tests/unit/test_calendar
+
+.PHONY: all clean test unit-test
 
 all: $(BINS)
 
@@ -21,8 +23,15 @@ all: $(BINS)
 calendar: calendar.c calendar_lib.c calendar_lib.h
 	$(CC) $(CFLAGS) -o $@ calendar.c calendar_lib.c
 
-clean:
-	rm -f $(BINS)
+# MinUnit ユニットテスト (calendar_lib 用)
+tests/unit/test_calendar: tests/unit/test_calendar.c calendar_lib.c calendar_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_calendar.c calendar_lib.c
 
-test: all
+unit-test: $(UNIT_TEST_BINS)
+	@./tests/unit/test_calendar
+
+clean:
+	rm -f $(BINS) $(UNIT_TEST_BINS)
+
+test: all unit-test
 	@bash tests/run_tests.sh

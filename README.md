@@ -22,7 +22,8 @@ xcode-select --install
 make            # 全ソースをビルド
 make 1to5       # 個別にビルド（拡張子なしの名前を指定）
 make clean      # 生成物を一括削除
-make test       # 全プログラムの出力を期待値と比較してテスト
+make unit-test  # MinUnit ユニットテストのみ実行
+make test       # ユニットテスト + 全プログラムの stdout 検証
 ```
 
 `Makefile` では `-std=gnu89` を指定したうえで、Apple Clang 16 以降でエラー昇格された K&R 風の構文（暗黙 `int` ／戻り値省略など）に関する警告を `-Wno-*` で抑止しています。学習履歴保全のためソースは書き換えません。
@@ -47,10 +48,22 @@ make simple-cat
 
 ## テスト
 
+テストは 2 層構成です。
+
+### ユニットテスト（MinUnit）
+
+`tests/unit/` 配下に [MinUnit](https://github.com/siu/minunit)（`tests/minunit.h` に vendor 同梱）を使ったユニットテストを置いています。現状は `calendar_lib.c`（`getMonthDays` / `getWeekDay`）が対象で、閏年判定や Zeller の公式に基づく曜日計算を網羅的に検証します。
+
+```sh
+make unit-test
+```
+
+### 出力比較テスト（shell）
+
 `tests/run_tests.sh` が各プログラムを実行し、stdout を期待値と完全一致で比較します。16 プログラム / 19 ケース（`argc` の 3 パターン、`calendar` の閏年含む 2 パターンを含む）を実行します。`coin` は `srand(time)` のため対局結果が非決定的なので、終了入力(`3`)を与えた直後の冒頭出力のみを検証します。
 
 ```sh
-make test
+make test       # ユニットテスト → shell テストの順で実行
 ```
 
 ## CI

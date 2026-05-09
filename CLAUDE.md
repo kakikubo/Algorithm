@@ -4,7 +4,19 @@ C 言語の入門・アルゴリズム学習用の個人リポジトリです。
 
 ## ディレクトリ構成
 
-ルート直下にすべての `.c` ソースと入力用テキスト（`abc.txt`）が並ぶフラットな構成です。サブディレクトリ・ビルドシステムは存在しません。ビルド手順は `README.md` を参照してください。
+ルート直下にすべての `.c` ソースと入力用テキスト（`abc.txt`）が並ぶフラットな構成です。例外として、ユニットテスト関連のみ `tests/` 以下にまとめています。
+
+```
+.                     # 学習サンプル本体（*.c）
+├── calendar_lib.{c,h}  # calendar.c から切り出した純粋関数（テスト共有用）
+└── tests/
+    ├── minunit.h       # MinUnit 本体（vendor 同梱）
+    ├── run_tests.sh    # 各プログラムの stdout を検証する shell テスト
+    └── unit/
+        └── test_calendar.c  # MinUnit によるユニットテスト
+```
+
+ビルド手順は `README.md` を参照してください。
 
 ## ソース一覧
 
@@ -14,7 +26,8 @@ C 言語の入門・アルゴリズム学習用の個人リポジトリです。
 | `argc.c` | コマンドライン引数（`argc` / `argv`）と `strcmp` による分岐 |
 | `arraysearch.c` / `arraysearch2.c` / `arraysearch3.c` | 配列の線形探索（基本 → 件数カウント → `break` で早期終了） |
 | `average.c` | 配列の合計と平均 |
-| `calendar.c` | 西暦・月入力からカレンダーを描画。閏年判定／曜日計算（Zeller の公式系） |
+| `calendar.c` | 西暦・月入力からカレンダーを描画。`getYearMonth` / `PrintCalendar` の I/O 部分を担当 |
+| `calendar_lib.{c,h}` | `calendar.c` から切り出した純粋関数（`getMonthDays` 閏年判定、`getWeekDay` Zeller の公式系）。MinUnit テストから共有 |
 | `charcat.c` | 文字配列を `'\0'` を意識して連結 |
 | `coin.c` | `rand()` を使ったコイン当てゲーム |
 | `function.c` | 関数定義とプロトタイプ宣言 |
@@ -27,10 +40,10 @@ C 言語の入門・アルゴリズム学習用の個人リポジトリです。
 
 ## ビルド・実行
 
-Makefile はなく、各ファイルを個別に `cc` でビルドする想定です。
+ルートに `Makefile` があり、`make` で一括ビルド、`make test` で「MinUnit ユニットテスト + shell テスト」が走ります。詳細は `README.md` を参照してください。
 
 ```sh
-cc -o 1to5 1to5.c
+cc -o 1to5 1to5.c   # Makefile を使わずに個別ビルドする例
 ./1to5
 ```
 
