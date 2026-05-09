@@ -3,10 +3,14 @@
 !.gitignore
 !Makefile
 !*.c
+!*.h
 !*.txt
 !*.md
 !tests/
 !tests/*.sh
+!tests/*.h
+!tests/unit/
+!tests/unit/*.c
 !.github/
 !.github/workflows/
 !.github/workflows/*.yml
