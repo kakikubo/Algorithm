@@ -11,9 +11,12 @@ CFLAGS = -std=gnu89 -Wall \
 SRCS = $(wildcard *.c)
 BINS = $(SRCS:.c=)
 
-.PHONY: all clean
+.PHONY: all clean test
 
 all: $(BINS)
 
 clean:
 	rm -f $(BINS)
+
+test: all
+	@bash tests/run_tests.sh

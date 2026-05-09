@@ -20,6 +20,7 @@ xcode-select --install
 make            # 全ソースをビルド
 make 1to5       # 個別にビルド（拡張子なしの名前を指定）
 make clean      # 生成物を一括削除
+make test       # 全プログラムの出力を期待値と比較してテスト
 ```
 
 `Makefile` では `-std=gnu89` を指定し、Apple Clang 16 以降でエラー昇格された K&R 風の構文（暗黙 `int` ／戻り値省略など）を警告に戻しています。学習履歴保全のためソースは書き換えません。
@@ -40,6 +41,14 @@ cc -std=gnu89 -o 1to5 1to5.c
 ```sh
 make simple-cat
 ./simple-cat
+```
+
+## テスト
+
+`tests/run_tests.sh` が各プログラムを実行し、stdout を期待値と完全一致で比較します。`coin` は `srand(time)` のため対局結果が非決定的なので、終了入力(`3`)を与えた直後の冒頭出力のみを検証します。
+
+```sh
+make test
 ```
 
 ## 補足
