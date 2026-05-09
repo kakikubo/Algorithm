@@ -12,28 +12,25 @@ Xcode Command Line Tools に含まれる `cc`（Apple Clang）を利用します
 xcode-select --install
 ```
 
-### 個別にビルドする
+### `make` で一括ビルドする（推奨）
+
+リポジトリ直下の `Makefile` を使うと、すべての `.c` を一括でビルドできます。
+
+```sh
+make            # 全ソースをビルド
+make 1to5       # 個別にビルド（拡張子なしの名前を指定）
+make clean      # 生成物を一括削除
+```
+
+`Makefile` では `-std=gnu89` を指定し、Apple Clang 16 以降でエラー昇格された K&R 風の構文（暗黙 `int` ／戻り値省略など）を警告に戻しています。学習履歴保全のためソースは書き換えません。
+
+### `make` を使わずに個別ビルドする
 
 `.c` ファイルごとに、拡張子を除いた名前で実行ファイルを生成します。
 
 ```sh
-cc -o 1to5 1to5.c
+cc -std=gnu89 -o 1to5 1to5.c
 ./1to5
-```
-
-警告を有効にしてビルドする場合は `-Wall` を付けます。
-
-```sh
-cc -Wall -o function function.c
-./function
-```
-
-### まとめてビルドする
-
-リポジトリ内のすべての `.c` を一括でビルドする場合は次のようにします。
-
-```sh
-for f in *.c; do cc -o "${f%.c}" "$f"; done
 ```
 
 ### `simple-cat` の実行について
@@ -41,11 +38,11 @@ for f in *.c; do cc -o "${f%.c}" "$f"; done
 `simple-cat` は同階層の `abc.txt` を読み込みます。リポジトリのルートをカレントディレクトリにして実行してください。
 
 ```sh
-cc -o simple-cat simple-cat.c
+make simple-cat
 ./simple-cat
 ```
 
 ## 補足
 
 - 既存ソースは古い K&R 風の書き方（`main()` の戻り値型省略など）を含み、Apple Clang ではいくつかの警告が出ますが学習履歴保全のためそのままにしています。
-- 生成された実行ファイルはコミット対象外です。
+- 生成された実行ファイルは `.gitignore` で追跡対象外です。`make clean` で削除できます。
