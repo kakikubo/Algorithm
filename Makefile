@@ -15,7 +15,17 @@ LIB_SRCS = calendar_lib.c sum1ton_lib.c arraysearch_lib.c average_lib.c \
 SRCS = $(filter-out $(LIB_SRCS),$(wildcard *.c))
 BINS = $(SRCS:.c=)
 
-UNIT_TEST_BINS = tests/unit/test_calendar
+UNIT_TEST_BINS = tests/unit/test_calendar \
+                 tests/unit/test_sum1ton \
+                 tests/unit/test_arraysearch \
+                 tests/unit/test_average \
+                 tests/unit/test_charcat \
+                 tests/unit/test_function \
+                 tests/unit/test_graph \
+                 tests/unit/test_recursive \
+                 tests/unit/test_reverse \
+                 tests/unit/test_swap \
+                 tests/unit/test_swapval
 
 .PHONY: all clean test unit-test
 
@@ -49,12 +59,32 @@ swap: swap.c swap_lib.c swap_lib.h
 swapval: swapval.c swapval_lib.c swapval_lib.h
 	$(CC) $(CFLAGS) -o $@ swapval.c swapval_lib.c
 
-# MinUnit ユニットテスト (calendar_lib 用)
+# MinUnit ユニットテスト
 tests/unit/test_calendar: tests/unit/test_calendar.c calendar_lib.c calendar_lib.h tests/minunit.h
 	$(CC) $(CFLAGS) -o $@ tests/unit/test_calendar.c calendar_lib.c
+tests/unit/test_sum1ton: tests/unit/test_sum1ton.c sum1ton_lib.c sum1ton_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_sum1ton.c sum1ton_lib.c
+tests/unit/test_arraysearch: tests/unit/test_arraysearch.c arraysearch_lib.c arraysearch_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_arraysearch.c arraysearch_lib.c
+tests/unit/test_average: tests/unit/test_average.c average_lib.c average_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_average.c average_lib.c
+tests/unit/test_charcat: tests/unit/test_charcat.c charcat_lib.c charcat_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_charcat.c charcat_lib.c
+tests/unit/test_function: tests/unit/test_function.c function_lib.c function_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_function.c function_lib.c
+tests/unit/test_graph: tests/unit/test_graph.c graph_lib.c graph_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_graph.c graph_lib.c
+tests/unit/test_recursive: tests/unit/test_recursive.c recursive_lib.c recursive_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_recursive.c recursive_lib.c
+tests/unit/test_reverse: tests/unit/test_reverse.c reverse_lib.c reverse_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_reverse.c reverse_lib.c
+tests/unit/test_swap: tests/unit/test_swap.c swap_lib.c swap_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_swap.c swap_lib.c
+tests/unit/test_swapval: tests/unit/test_swapval.c swapval_lib.c swapval_lib.h tests/minunit.h
+	$(CC) $(CFLAGS) -o $@ tests/unit/test_swapval.c swapval_lib.c
 
 unit-test: $(UNIT_TEST_BINS)
-	@./tests/unit/test_calendar
+	@for t in $(UNIT_TEST_BINS); do echo "=== $$t ==="; ./$$t || exit 1; done
 
 clean:
 	rm -f $(BINS) $(UNIT_TEST_BINS)
