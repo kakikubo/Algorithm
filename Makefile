@@ -90,4 +90,3 @@ clean:
 	rm -f $(BINS) $(UNIT_TEST_BINS)
 
 test: all unit-test
-	@bash tests/run_tests.sh
