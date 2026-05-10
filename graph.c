@@ -1,15 +1,14 @@
 #include <stdio.h>
+#include "graph_lib.h"
 
 main()
 {
   int a[] = {4, 5, 2, 3};
-  int i, j;
+  int j;
+  char buf[64];
 
   for(j = 0; j < 4; j++){
-    printf("a[%d]=%d|", j, a[j]);
-    for(i = 1; i <= a[j]; i++){
-      printf("*");
-    }
-    printf("\n");
+    format_bar(buf, j, a[j]);
+    printf("%s\n", buf);
   }
 }

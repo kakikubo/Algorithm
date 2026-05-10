@@ -1,16 +1,13 @@
 #include <stdio.h>
+#include "arraysearch_lib.h"
 
 main(){
-  int n = 0;
   int a[] = {9, 8, 4, 6, 4};
-  int i;
+  int i, n;
 
-  for(i = 0; i < 5; i++){
-    if(a[i] == 7){
-      printf("7があったよ\n");
-      n++;
-    }
-  }
+  n = count_occurrences(a, 5, 7);
+  for(i = 0; i < n; i++)
+    printf("7があったよ\n");
   if ( n == 0 )
     printf("7はなかったよ\n");
   else

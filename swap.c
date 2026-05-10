@@ -1,29 +1,22 @@
 #include <stdio.h>
+#include "swap_lib.h"
 
-void swap(int *, int *);
-void sum(int, int);
+void print_sum(int min, int max);
 
 main()
 {
-  sum(1, 5);
-  sum(10, 5);
-  sum(1, 10);
-  sum(2, 2);
+  print_sum(1, 5);
+  print_sum(10, 5);
+  print_sum(1, 10);
+  print_sum(2, 2);
 }
 
-void swap(int *a, int *b)
-{
-  int temp;
-  temp = *a;
-  *a = *b;
-  *b = temp;
-}
-void sum(int min, int max)
+void print_sum(int min, int max)
 {
   int i, n;
 
   if(min > max)
-    swap(&min, &max);
+    swap_int(&min, &max);
 
   printf("%d", min);
   n = min;
